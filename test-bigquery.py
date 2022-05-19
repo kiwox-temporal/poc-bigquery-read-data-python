@@ -2,12 +2,12 @@ from google.cloud import bigquery
 import time
 
 
-def executeQueryClaroTest():
+def executeQueryBigDataTest():
     client = bigquery.Client()
 
     query = """
         SELECT *
-        FROM `claro-test-332211.test.CPEHistoricData` t1
+        FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` t1
     """
     inicio = time.time()
     query_job = client.query(query)  # Make an API request.
@@ -16,8 +16,8 @@ def executeQueryClaroTest():
     # print(query_job)
     for row in query_job:
         # Row values can be accessed by field name or index.
-        print("id={}, value={}, cpe={}".format(
-            row["id"], row["value"], row["cpe"]))
+        print("trip_id={}, subscriber_type={}, bikeid={}".format(
+            row["trip_id"], row["subscriber_type"], row["bikeid"]))
 
     fin = time.time()
     print(f'TIME FOR EXECUTE QUERY: {fin-inicio}')
@@ -73,4 +73,5 @@ def executeComplexQuery():
 
 
 # executeSimpleQuery()
-executeComplexQuery()
+#executeComplexQuery()
+executeQueryBigDataTest()
