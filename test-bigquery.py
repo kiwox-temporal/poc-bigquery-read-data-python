@@ -2,9 +2,15 @@ from google.cloud import bigquery
 import time
 
 
+def writeFile():
+    f = open('result-simple-query', 'w')
+    f.write("Woops! I have deleted the content!")
+    f.close()
+
+
 def executeQueryBigDataTest():
     client = bigquery.Client()
-
+    lines = []
     query = """
         SELECT *
         FROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` t1
@@ -13,12 +19,17 @@ def executeQueryBigDataTest():
     query_job = client.query(query)  # Make an API request.
 
     print("The query data:")
+    
     # print(query_job)
     for row in query_job:
         # Row values can be accessed by field name or index.
-        print("trip_id={}, subscriber_type={}, bikeid={}".format(
-            row["trip_id"], row["subscriber_type"], row["bikeid"]))
-
+        line = "trip_id={}, subscriber_type={}, bikeid={}".format(
+            row["trip_id"], row["subscriber_type"], row["bikeid"])
+        lines.append(line)
+    
+    with open('result-simple-query.txt', 'a') as f: 
+        f.writelines('\n'.join(lines))
+    
     fin = time.time()
     print(f'TIME FOR EXECUTE QUERY: {fin-inicio}')
 
@@ -73,5 +84,5 @@ def executeComplexQuery():
 
 
 # executeSimpleQuery()
-#executeComplexQuery()
+# executeComplexQuery()
 executeQueryBigDataTest()
